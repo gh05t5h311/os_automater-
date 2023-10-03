@@ -8,8 +8,8 @@ cmds = ["mkf: Makes a new file(be careful can overwrite with no warning if the f
 "rfl: Read the contents of a file.",
 "sysinfo: Displays useful information about the local system.",
 "help: Displays this help dialog listing all the commands.",
-"sfile: Takes a filename and searches is for spesifc text. Note you may need to provide a path E.G:(if the file you are searching is not in the same directory as this program); /some/path",
-"whoisdighost: Performs a whois, dig and host lookup.",
+"sfile: Takes a filename and searches is for specific text. Note you may need to provide a path E.G:(if the file you are searching is not in the same directory as this program); /some/path",
+"wdh: Performs a whois, dig and host lookup.",
 "exit: Exits."
 ]
 console = True
@@ -48,7 +48,7 @@ def rfile():
 		file = open(fileName,"r")
 	except FileNotFoundError:
 		print("The file you where looking for was not found...")
-	file.seek(0,0)	
+	file.seek(0,0)
 	print(file.read())
 	file.close()
 def select():
@@ -57,11 +57,23 @@ def select():
 	return getInfo("What command please..\n$> ","str")
 def sfile(filename,search):
 	os.system("cat %s | grep -i %s"%(filename,search))
-def whd():
+def wdh():
 	domain = getInfo("Domain name please(just the name and the tld(e.g google.com).\n$:","str")
-	cmd("whois %s"%(domain))
-	cmd("dig %s"%(domain))
-	cmd("host %s"%(domain))
+	std = getInfo("Would you like to save it to disk?","str")
+	fileName = getInfo("Please pick a filename: \n$: ")
+	if std.lower() == "yes" or std.lower() == "y":
+		std = True:
+	else:
+		std = False
+	if std == False:
+		print("Just getting the information...")
+		cmd("whois %s"%(domain))
+		cmd("dig %s"%(domain))
+		cmd("host %s"%(domain))
+	else:
+		cmd("whois > %s"%(fileName))
+		cmd("dig >> %s"%(fileName))
+		cmd("host >> %s"%(fileName))
 	#I know using system is back but in this context here don't think It will cause any issues(please correct me if you have a way to prove I'm wrong).
 _select_ = ""
 print("The current working directory is:\n%s\nOutput from the directory is:\n%s"%(os.getcwd(),cmd("ls -alt")))
