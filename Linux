@@ -7,9 +7,11 @@ cmds = ["mkf: Makes a new file(be careful can overwrite with no warning if the f
 "apf: Append to a file!",
 "rfl: Read the contents of a file.",
 "sysinfo: Displays useful information about the local system.",
+"mdir: Makes a new directory.",
 "help: Displays this help dialog listing all the commands.",
 "sfile: Takes a filename and searches is for specific text. Note you may need to provide a path E.G:(if the file you are searching is not in the same directory as this program); /some/path",
 "wdh: Performs a whois, dig and host lookup.",
+"odh: Displays information for octal, hex, decimal",
 "exit: Exits."
 ]
 console = True
@@ -62,7 +64,7 @@ def wdh():
 	std = getInfo("Would you like to save it to disk?","str")
 	fileName = getInfo("Please pick a filename: \n$: ")
 	if std.lower() == "yes" or std.lower() == "y":
-		std = True:
+		std = True
 	else:
 		std = False
 	if std == False:
@@ -75,6 +77,10 @@ def wdh():
 		cmd("dig >> %s"%(fileName))
 		cmd("host >> %s"%(fileName))
 	#I know using system is back but in this context here don't think It will cause any issues(please correct me if you have a way to prove I'm wrong).
+def mdir():
+		dname = getInfo("Directory name please: ","str")
+		cmd("mkdir %s"%(dname))
+		print("OK, have made a directory called: '%s'\nPATH: %s"%(dname,os.getcwd()))
 _select_ = ""
 print("The current working directory is:\n%s\nOutput from the directory is:\n%s"%(os.getcwd(),cmd("ls -alt")))
 while _select_ != "exit":
@@ -92,8 +98,11 @@ while _select_ != "exit":
 			search(getInfo("Filename(or full path)","str"),getInfo("search terms please:\n$: ","str"))
 		elif _select_ == "wdh":
 				wdh()
+		elif _select_ == "odh":
+			os.system("man ascii")
 		elif _select_ == "help":
 			for each in cmds:
 				print("%s\n."%(each))
 	except KeyboardInterrupt:
 		exit()
+#socket.gethostbyname("somedomain.someld(probably t(ld)"
