@@ -118,6 +118,6 @@ while _select_ != "exit":
 		elif _select_ == "encrypt":
 			print("%s"%(encrypt(getInfo("information to encode: ","str"))))
 		elif _select_ == "decrypt":
-			print("%s"%(decrypt(getInfo("information to decode: ","str"))))
+			print("%s"%str((decrypt(getInfo("information to decode: ","str")))))
 	except KeyboardInterrupt:
 		exit()
