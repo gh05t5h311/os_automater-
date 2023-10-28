@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-import os, socket, rsa
+import os,rsa
 cmds = ["mkf: Makes a new file(be careful can overwrite with no warning if the filename exists!)",
 "apf: Append to a file.",
 "rfl: Read the contents of a file.",
@@ -8,12 +8,13 @@ cmds = ["mkf: Makes a new file(be careful can overwrite with no warning if the f
 "help: Displays this help dialog listing all the commands.",
 "sfile: Takes a filename and searches is for specific text. Note you may need to provide a path E.G:(if the file you are searching is not in the same directory as this program); /some/path",
 "wdh: Performs a whois, dig and host lookup",
-"odh: Displays information for octal, hex, decimal.",
+"ohd: Displays information for octal, hex, decimal.",
 "pchk: Checks services running on a specific port(will prompt for root password(if needed)).",
-"encrypt: Encrypts your precious data with a 'powerful' 2048 rsa cypher(use responsibly(not my fault if you encrypt your data like a idiot and hide it from your own private key)take no responsibility).",
+"encrypt: Encrypts your precious data with a 'powerful' 2048 RSA cypher(use responsibly(not my fault if you encrypt your data like an idiot and hide it from your own private key)take no responsibility)).",
 "decrypt: Decrypts rsa encoded data(note the public/private key MUST match, up to you to get that right)",
-"exit: Exits."	
-] #Scream's at users(!!!)
+"osi: Prints out the open system's interconnect model(OSI model)",
+"exit: Exits."
+]
 publicKey,privateKey = rsa.newkeys(2048)
 console = True
 def getInfo(arg,ios):
@@ -73,7 +74,7 @@ def wdh():
 	if std == False:
 		print("Just getting the information...")
 		cmd("whois %s"%(domain))
-		cmd("dig %s"%(domain))
+		cmd("dig  %s"%(domain))
 		cmd("host %s"%(domain))
 	else:
 		cmd("whois > %s"%(fileName))
@@ -87,12 +88,24 @@ def phck():
 	cmd("netstat –pnltu | grep %s"%(getInfo("Port Please: ","int")))
 def encrypt(data):
 	enc_msg = rsa.encrypt(data.encode(),publicKey)
+	print("Encoded message looks like:\n %s"%(enc_msg))
 	return enc_msg
 def decrypt(data):
         dec_msg = rsa.decrypt(data,privateKey).decode()
         return dec_msg
+ def osi():
+ 	print(""" 
+ 	6)Application: Network process to application. DNS WWW/HTTP/HTTPS/P2P,E-Mail,POP,SMTP,Telnet,FTP.
+ 	5)Presentation: Data representation and encryption. HTML,DOC,JPEG,MP3,AVI.
+ 	4)Session: Inter host communication. TCP,SIP,RTP.
+ 	3)Transport: End-To-End connections and reliability.TCP,UDP,SCTP,SSL,TLS.
+ 	2)Path Determination and logical addressing: IP,IPSec,ICMP,IGMP,OSPF.
+ 	1)Data Link: Ethernet, 802.11,MAC/LLC,VLAN,ATM,HDP,PPP,Q,921,Token Ring,ARP.
+ 	0)Physical: Media signal and binary transmission. RS-232,RJ45,V,100BASE-TX,SDH,DSL,802.11
+ 	""")
 _select_ = ""
-print("The current working directory is:\n%s"%(os.getcwd()))
+enc_msg =  ""
+print("Hello %s\nThe current working directory is:\n%s"%(cmd("host"),os.getcwd()))
 while _select_ != "exit":
 	try:
 		_select_ = getInfo("|> ","str")
@@ -108,7 +121,7 @@ while _select_ != "exit":
 			search(getInfo("Filename(or full path)","str"),getInfo("search terms please:\n$: ","str"))
 		elif _select_ == "wdh":
 				wdh()
-		elif _select_ == "odh":
+		elif _select_ == "ohd":
 			os.system("man ascii")
 		elif _select_ == "help":
 			for each in cmds:
@@ -116,8 +129,8 @@ while _select_ != "exit":
 		elif _select_ == "pchk":
 			pchk()
 		elif _select_ == "encrypt":
-			print("%s"%(encrypt(getInfo("information to encode: ","str"))))
+			enc_msg = encrypt(getInfo("information to encode: ","str"))
 		elif _select_ == "decrypt":
-			print("%s"%str((decrypt(getInfo("information to decode: ","str")))))
+			print("%s"%(decrypt(enc_msg)))
 	except KeyboardInterrupt:
 		exit()
